@@ -1,3 +1,19 @@
 spring:
   application:
     name: LogIntelligence
+  datasource:
+    url: jdbc:postgresql://localhost:5433/LogIntelligence
+    username: postgres
+    password: root
+  
+  # Hibernate dialect (auto-detected, but good to specify)
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  
+  # Optional: log SQL parameters (helps debugging)
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
