@@ -12,8 +12,24 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            value:
+              default:
+                type:
+                  com.dylan.logintelligence.DTOs.LogResponseDTO
   # Optional: log SQL parameters (helps debugging)
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+server:
+  port: 8090

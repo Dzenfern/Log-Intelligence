@@ -24,9 +24,10 @@ public class LogController {
 
 
     @PostMapping("/")
-    public ResponseEntity<LogResponseDTO> createLog( @RequestBody LogRequestDTO dto) {
-            log.debug("Received log request: " + dto);
-            LogResponseDTO logResponseDTO=  logService.saveLog(dto);
-            return ResponseEntity.ok(logResponseDTO);
+    public ResponseEntity<String> createLog(@Valid @RequestBody LogRequestDTO dto) {
+
+            logService.sendLog(dto);
+
+            return ResponseEntity.ok("Log accepted for processing");
     }
 }
