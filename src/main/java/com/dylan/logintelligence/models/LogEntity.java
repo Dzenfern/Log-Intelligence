@@ -5,7 +5,6 @@ import com.dylan.logintelligence.utils.LogLevel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.IndexColumn;
 
 import java.time.LocalDateTime;
 
