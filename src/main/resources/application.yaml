@@ -20,12 +20,8 @@ spring:
     consumer:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring:
-          json:
-            value:
-              default:
-                type:
-                  com.dylan.logintelligence.DTOs.LogResponseDTO
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.dylan.logintelligence.DTOs.LogResponseDTO
   # Optional: log SQL parameters (helps debugging)
 logging:
   level:
