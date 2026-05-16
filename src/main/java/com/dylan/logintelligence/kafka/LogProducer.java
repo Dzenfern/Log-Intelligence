@@ -24,7 +24,6 @@ public class LogProducer {
 
                     if (ex != null) {
                         log.error("Kafka send failed", ex);
-                        throw new RuntimeException("Failed to send log to Kafka", ex);
                     } else {
                         log.info("Message sent to partition {}",
                                 result.getRecordMetadata().partition());
