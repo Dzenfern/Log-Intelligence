@@ -4,10 +4,13 @@ import com.dylan.logintelligence.DTOs.LogRequestDTO;
 import com.dylan.logintelligence.DTOs.LogResponseDTO;
 import com.dylan.logintelligence.kafka.LogProducer;
 import com.dylan.logintelligence.repositories.LogRepository;
+import com.dylan.logintelligence.utils.LogLevel;
+import com.dylan.logintelligence.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +22,10 @@ public class LogService {
     private final LogProducer logProducer;
 
     private final LogRepository logRepository;
+    private final Utils utils;
 
-    private final ModelMapper modelMapper = new ModelMapper();
-
-    public LogService(LogProducer logProducer, LogRepository logRepository) {
+    public LogService(LogProducer logProducer, LogRepository logRepository,Utils utils) {
+        this.utils = utils;
         this.logProducer = logProducer;
         this.logRepository = logRepository;
     }
@@ -37,29 +40,24 @@ public class LogService {
         }
     }
 
-    public List<LogResponseDTO> getLogs(int page, int size, String level, String service) {
+    public Page<LogResponseDTO> getLogs(int page, int size, String level, String service) {
         // Placeholder for pagination logic
-        Pageable pageable = PageRequest.of(page, size);
-        if (level != null && !level.isEmpty() && service != null && !service.isEmpty()) {
-            return logRepository.findByLevelAndService(level, service, pageable)
-                    .getContent().stream()
-                    .map(logEntity -> modelMapper.map(logEntity, LogResponseDTO.class))
-                    .toList();
-        } else if (level != null && !level.isEmpty()) {
-            return logRepository.findByLevel(level, PageRequest.of(page, size))
-                    .getContent().stream()
-                    .map(logEntity -> modelMapper.map(logEntity, LogResponseDTO.class))
-                    .toList();
-        } else if (service != null && !service.isEmpty()) {
-            return logRepository.findByService(service, PageRequest.of(page, size))
-                    .getContent().stream()
-                    .map(logEntity -> modelMapper.map(logEntity, LogResponseDTO.class))
-                    .toList();
+        LogLevel logLevel = LogLevel.valueOf(level);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("timestamp").descending());
+        Boolean hasLevel = level != null && !level.isEmpty();
+        Boolean hasService = service != null && !service.isEmpty();
+        if (hasLevel && hasService) {
+            return logRepository.findByLevelAndService(logLevel, service, pageable)
+                    .map(utils::mapToDTO);
+        } else if (hasLevel) {
+            return logRepository.findByLevel(logLevel, pageable)
+                    .map(utils::mapToDTO);
+        } else if (hasService) {
+            return logRepository.findByService(service, pageable)
+                    .map(utils::mapToDTO);
         } else {
-            return logRepository.findAll(PageRequest.of(page, size))
-                    .getContent().stream()
-                    .map(logEntity -> modelMapper.map(logEntity, LogResponseDTO.class))
-                    .toList();
+            return logRepository.findAll(pageable)
+                    .map(utils::mapToDTO);
         }
     }
 }

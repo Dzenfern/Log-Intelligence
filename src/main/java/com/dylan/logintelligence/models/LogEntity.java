@@ -39,5 +39,11 @@ public class LogEntity {
     @CreationTimestamp
     private LocalDateTime timestamp;
 
+    private String category;
+
+    private Double confidence;
+
+    private String ModelVersion;
+
 
 }
