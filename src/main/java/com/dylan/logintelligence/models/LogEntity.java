@@ -43,7 +43,7 @@ public class LogEntity {
 
     private Double confidence;
 
-    private String ModelVersion;
+    private String modelVersion;
 
 
 }

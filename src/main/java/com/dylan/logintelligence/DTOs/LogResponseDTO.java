@@ -14,4 +14,7 @@ public class LogResponseDTO {
     private String level;
     private String message;
     private LocalDateTime timestamp;
+    private String category;
+    private Double confidence;
+    private String modelVersion;
 }

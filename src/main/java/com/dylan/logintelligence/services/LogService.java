@@ -2,7 +2,7 @@ package com.dylan.logintelligence.services;
 
 import com.dylan.logintelligence.DTOs.LogRequestDTO;
 import com.dylan.logintelligence.DTOs.LogResponseDTO;
-import com.dylan.logintelligence.kafka.LogProducer;
+import com.dylan.logintelligence.producers.LogProducer;
 import com.dylan.logintelligence.repositories.LogRepository;
 import com.dylan.logintelligence.utils.LogLevel;
 import com.dylan.logintelligence.utils.Utils;
@@ -13,14 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @Slf4j
 public class LogService {
 
     private final LogProducer logProducer;
-
     private final LogRepository logRepository;
     private final Utils utils;
 
