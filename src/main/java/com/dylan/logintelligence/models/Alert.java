@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
         name = "alerts",
         indexes = {
                 @Index(name = "idx_type", columnList = "type"),
-                @Index(name = "idx_severity", columnList = "severity"),
+                @Index(name = "idx_category", columnList = "category"),
                 @Index(name = "idx_timestamp", columnList = "timestamp")
         }
 )
@@ -29,7 +29,7 @@ public class Alert {
     private Long id;
 
     @NotNull
-    private String type;
+    private String category;
 
     @Column(nullable = false,length = 1000)
     private String description;
